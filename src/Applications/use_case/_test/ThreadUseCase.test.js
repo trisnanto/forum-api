@@ -1,6 +1,8 @@
 const NewThread = require('../../../Domains/threads/entities/NewThread');
 const ForumThread = require('../../../Domains/threads/entities/ForumThread');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const CommentRepository = require('../../../Domains/comments/CommentRepository');
+const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
 const ThreadUseCase = require('../ThreadUseCase');
 
 describe('AddThreadUseCase', () => {
@@ -26,7 +28,12 @@ describe('AddThreadUseCase', () => {
 
     /** mocking needed function */
     mockThreadRepository.addThread = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedForumThread));
+      .mockImplementation(() => Promise.resolve(new ForumThread({
+        id: 'thread-123',
+        title: 'A New Thread',
+        body: "The new thread's body",
+        owner: 'user-123',
+      })));
 
     /** creating use case instance */
     const getThreadUseCase = new ThreadUseCase({
@@ -65,14 +72,24 @@ describe('GetThreadUseCase', () => {
 
     /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
+    const mockReplyRepository = new ReplyRepository();
 
     /** mocking needed function */
+    mockThreadRepository.verifyThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve());
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(expectedForumThread));
+    mockCommentRepository.getCommentsByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve([]));
+    mockReplyRepository.getRepliesByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve([]));
 
     /** creating use case instance */
     const threadUseCase = new ThreadUseCase({
       threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository,
+      replyRepository: mockReplyRepository,
     });
 
     // Action
@@ -80,6 +97,9 @@ describe('GetThreadUseCase', () => {
 
     // Assert
     expect(forumThread).toStrictEqual(expectedForumThread);
+    expect(mockThreadRepository.verifyThreadId).toBeCalledWith('thread-123');
     expect(mockThreadRepository.getThreadById).toBeCalledWith('thread-123');
+    expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith('thread-123');
+    expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith('thread-123');
   });
 });

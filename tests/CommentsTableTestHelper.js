@@ -24,7 +24,7 @@ const CommentsTableTestHelper = {
     return result.rows;
   },
 
-  async deleteCommentByIdById(id) {
+  async deleteCommentById(id) {
     const query = {
       text: 'UPDATE comments SET is_delete = true WHERE id = $1 RETURNING id',
       values: [id],

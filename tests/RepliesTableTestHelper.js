@@ -24,7 +24,7 @@ const RepliesTableTestHelper = {
     return result.rows;
   },
 
-  async deleteReplyByIdById(id) {
+  async deleteReplyById(id) {
     const query = {
       text: 'UPDATE replies SET is_delete = true WHERE id = $1 RETURNING id',
       values: [id],
