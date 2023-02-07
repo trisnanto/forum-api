@@ -19,7 +19,8 @@ describe('AddThreadUseCase', () => {
     };
     const expectedForumThread = new ForumThread({
       id: 'thread-123',
-      title: useCasePayload.title,
+      title: 'A New Thread',
+      body: "The new thread's body",
       owner: fakeCredentialID,
     });
 
@@ -60,15 +61,13 @@ describe('GetThreadUseCase', () => {
     // Arrange
     /** creating fake credentialId */
     const fakeCredentialID = 'user-123';
-    const useCasePayload = {
+    const expectedForumThread = {
+      id: 'thread-123',
       title: 'A New Thread',
       body: "The new thread's body",
-    };
-    const expectedForumThread = new ForumThread({
-      id: 'thread-123',
-      title: useCasePayload.title,
       owner: fakeCredentialID,
-    });
+      comments: [],
+    };
 
     /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
@@ -79,7 +78,12 @@ describe('GetThreadUseCase', () => {
     mockThreadRepository.verifyThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve());
     mockThreadRepository.getThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedForumThread));
+      .mockImplementation(() => Promise.resolve({
+        id: 'thread-123',
+        title: 'A New Thread',
+        body: "The new thread's body",
+        owner: 'user-123',
+      }));
     mockCommentRepository.getCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve([]));
     mockReplyRepository.getRepliesByThreadId = jest.fn()
@@ -96,10 +100,14 @@ describe('GetThreadUseCase', () => {
     const forumThread = await threadUseCase.getThreadById('thread-123');
 
     // Assert
-    expect(forumThread).toStrictEqual(expectedForumThread);
     expect(mockThreadRepository.verifyThreadId).toBeCalledWith('thread-123');
     expect(mockThreadRepository.getThreadById).toBeCalledWith('thread-123');
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith('thread-123');
     expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith('thread-123');
+    expect(forumThread.id).toEqual(expectedForumThread.id);
+    expect(forumThread.title).toEqual(expectedForumThread.title);
+    expect(forumThread.body).toEqual(expectedForumThread.body);
+    expect(forumThread.owner).toEqual(expectedForumThread.owner);
+    expect(forumThread.comments).toEqual(expectedForumThread.comments);
   });
 });

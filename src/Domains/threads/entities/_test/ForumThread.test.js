@@ -17,6 +17,7 @@ describe('a ForumThread entities', () => {
     const payload = {
       id: 123,
       title: 'dicoding',
+      body: 123,
       owner: {},
     };
 
@@ -29,6 +30,7 @@ describe('a ForumThread entities', () => {
     const payload = {
       id: 'thread-123',
       title: 'New Title',
+      body: 'New body',
       owner: 'New owner',
     };
 
@@ -38,6 +40,7 @@ describe('a ForumThread entities', () => {
     // Assert
     expect(forumThread.id).toEqual(payload.id);
     expect(forumThread.title).toEqual(payload.title);
+    expect(forumThread.body).toEqual(payload.body);
     expect(forumThread.owner).toEqual(payload.owner);
   });
 });

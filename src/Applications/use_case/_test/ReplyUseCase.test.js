@@ -92,7 +92,9 @@ describe('DeleteReplyUseCase', () => {
     mockReplyRepository.verifyReplyOwnership = jest.fn()
       .mockImplementation(() => Promise.resolve());
     mockReplyRepository.deleteReplyById = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedDeletedReply));
+      .mockImplementation(() => Promise.resolve({
+        id: 'reply-123',
+      }));
 
     /** creating use case instance */
     const replyUseCase = new ReplyUseCase({

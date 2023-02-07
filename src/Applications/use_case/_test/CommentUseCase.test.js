@@ -66,7 +66,11 @@ describe('GetCommentUseCase', () => {
       content: 'New comment',
     };
     const expectedThreadComment = {
+      id: 'comment-123',
+      username: 'New user 1',
+      date: '2023-02-07T07:20:08.262Z',
       content: useCasePayload.content,
+      is_delete: false,
     };
 
     /** creating dependency of use case */
@@ -77,7 +81,13 @@ describe('GetCommentUseCase', () => {
     mockCommentRepository.verifyCommentId = jest.fn()
       .mockImplementation(() => Promise.resolve());
     mockCommentRepository.getCommentById = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedThreadComment));
+      .mockImplementation(() => Promise.resolve({
+        id: 'comment-123',
+        username: 'New user 1',
+        date: '2023-02-07T07:20:08.262Z',
+        content: 'New comment',
+        is_delete: false,
+      }));
 
     /** creating use case instance */
     const commentUseCase = new CommentUseCase({
@@ -119,7 +129,9 @@ describe('DeleteCommentUseCase', () => {
     mockCommentRepository.verifyCommentOwnership = jest.fn()
       .mockImplementation(() => Promise.resolve());
     mockCommentRepository.deleteCommentById = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedDeletedComment));
+      .mockImplementation(() => Promise.resolve({
+        id: 'comment-123',
+      }));
 
     /** creating use case instance */
     const commentUseCase = new CommentUseCase({

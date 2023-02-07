@@ -40,7 +40,6 @@ class ThreadUseCase {
         return modifiedReplies;
       });
     });
-
     return thread;
   }
 }

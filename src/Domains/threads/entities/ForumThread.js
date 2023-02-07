@@ -6,6 +6,7 @@ class ForumThread {
 
     this.id = payload.id;
     this.title = payload.title;
+    this.body = payload.body;
     this.owner = payload.owner;
   }
 
