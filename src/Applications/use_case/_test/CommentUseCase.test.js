@@ -21,7 +21,6 @@ describe('AddCommentUseCase', () => {
     };
     const expectedAddedComment = {
       id: 'comment-123',
-      thread_id: fakeThreadId,
       content: useCasePayload.content,
       owner: fakeCredentialId,
     };
@@ -36,7 +35,6 @@ describe('AddCommentUseCase', () => {
     mockCommentRepository.addComment = jest.fn()
       .mockImplementation(() => Promise.resolve({
         id: 'comment-123',
-        thread_id: 'thread-123',
         content: 'New comment',
         owner: 'user-123',
       }));
@@ -53,54 +51,6 @@ describe('AddCommentUseCase', () => {
     expect(addedComment).toStrictEqual(expectedAddedComment);
     expect(mockThreadRepository.verifyThreadId).toBeCalledWith(fakeThreadId);
     expect(mockCommentRepository.addComment).toBeCalledWith(useCasePayload, fakeThreadId, fakeCredentialId);
-  });
-});
-
-describe('GetCommentUseCase', () => {
-  /**
-   * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
-   */
-  it('should orchestrating the get comment action correctly', async () => {
-    // Arrange
-    const useCasePayload = {
-      content: 'New comment',
-    };
-    const expectedThreadComment = {
-      id: 'comment-123',
-      username: 'New user 1',
-      date: '2023-02-07T07:20:08.262Z',
-      content: useCasePayload.content,
-      is_delete: false,
-    };
-
-    /** creating dependency of use case */
-    const mockThreadRepository = new ThreadRepository();
-    const mockCommentRepository = new CommentRepository();
-
-    /** mocking needed function */
-    mockCommentRepository.verifyCommentId = jest.fn()
-      .mockImplementation(() => Promise.resolve());
-    mockCommentRepository.getCommentById = jest.fn()
-      .mockImplementation(() => Promise.resolve({
-        id: 'comment-123',
-        username: 'New user 1',
-        date: '2023-02-07T07:20:08.262Z',
-        content: 'New comment',
-        is_delete: false,
-      }));
-
-    /** creating use case instance */
-    const commentUseCase = new CommentUseCase({
-      threadRepository: mockThreadRepository, commentRepository: mockCommentRepository,
-    });
-
-    // Action
-    const threadComment = await commentUseCase.getCommentById('comment-123');
-
-    // Assert
-    expect(threadComment).toStrictEqual(expectedThreadComment);
-    expect(mockCommentRepository.verifyCommentId).toBeCalledWith('comment-123');
-    expect(mockCommentRepository.getCommentById).toBeCalledWith('comment-123');
   });
 });
 

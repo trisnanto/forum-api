@@ -20,8 +20,6 @@ describe('AddReplyUseCase', () => {
     };
     const expectedAddedReply = {
       id: 'reply-123',
-      thread_id: fakeThreadId,
-      comment_id: fakeCommentId,
       content: useCasePayload.content,
       owner: fakeCredentialId,
     };
@@ -39,8 +37,6 @@ describe('AddReplyUseCase', () => {
     mockReplyRepository.addReply = jest.fn()
       .mockImplementation(() => Promise.resolve({
         id: 'reply-123',
-        thread_id: 'thread-123',
-        comment_id: 'comment-123',
         content: 'New reply',
         owner: 'user-123',
       }));

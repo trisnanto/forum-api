@@ -59,13 +59,12 @@ describe('GetThreadUseCase', () => {
    */
   it('should orchestrating the get thread action correctly', async () => {
     // Arrange
-    /** creating fake credentialId */
-    const fakeCredentialID = 'user-123';
     const expectedForumThread = {
       id: 'thread-123',
       title: 'A New Thread',
       body: "The new thread's body",
-      owner: fakeCredentialID,
+      date: '2023-02-09T07:43:19.593Z',
+      username: 'New user 1',
       comments: [],
     };
 
@@ -82,7 +81,8 @@ describe('GetThreadUseCase', () => {
         id: 'thread-123',
         title: 'A New Thread',
         body: "The new thread's body",
-        owner: 'user-123',
+        date: '2023-02-09T07:43:19.593Z',
+        username: 'New user 1',
       }));
     mockCommentRepository.getCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve([]));
@@ -107,7 +107,295 @@ describe('GetThreadUseCase', () => {
     expect(forumThread.id).toEqual(expectedForumThread.id);
     expect(forumThread.title).toEqual(expectedForumThread.title);
     expect(forumThread.body).toEqual(expectedForumThread.body);
-    expect(forumThread.owner).toEqual(expectedForumThread.owner);
+    expect(forumThread.date).toEqual(expectedForumThread.date);
+    expect(forumThread.username).toEqual(expectedForumThread.username);
     expect(forumThread.comments).toEqual(expectedForumThread.comments);
+  });
+
+  it('should return thread with comment correctly', async () => {
+    // Arrange
+    const expectedForumThread = {
+      id: 'thread-123',
+      title: 'A New Thread',
+      body: "The new thread's body",
+      date: '2023-02-09T07:43:19.593Z',
+      username: 'New user 1',
+      comments: [
+        {
+          id: 'comment-123',
+          username: 'user-456',
+          date: '2023-02-09T08:43:19.593Z',
+          content: 'New comment',
+          replies: [],
+        },
+      ],
+    };
+
+    /** creating dependency of use case */
+    const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
+    const mockReplyRepository = new ReplyRepository();
+
+    /** mocking needed function */
+    mockThreadRepository.verifyThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve());
+    mockThreadRepository.getThreadById = jest.fn()
+      .mockImplementation(() => Promise.resolve({
+        id: 'thread-123',
+        title: 'A New Thread',
+        body: "The new thread's body",
+        date: '2023-02-09T07:43:19.593Z',
+        username: 'New user 1',
+      }));
+    mockCommentRepository.getCommentsByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve([
+        {
+          id: 'comment-123',
+          username: 'user-456',
+          date: '2023-02-09T08:43:19.593Z',
+          content: 'New comment',
+          is_delete: false,
+        },
+      ]));
+    mockReplyRepository.getRepliesByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve([]));
+
+    /** creating use case instance */
+    const threadUseCase = new ThreadUseCase({
+      threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository,
+      replyRepository: mockReplyRepository,
+    });
+
+    // Action
+    const forumThread = await threadUseCase.getThreadById('thread-123');
+
+    // Assert
+    expect(forumThread.comments[0].id).toEqual(expectedForumThread.comments[0].id);
+    expect(forumThread.comments[0].username).toEqual(expectedForumThread.comments[0].username);
+    expect(forumThread.comments[0].date).toEqual(expectedForumThread.comments[0].date);
+    expect(forumThread.comments[0].content).toEqual(expectedForumThread.comments[0].content);
+    expect(forumThread.comments[0].replies).toEqual(expectedForumThread.comments[0].replies);
+  });
+
+  it('should return thread with comment and reply correctly', async () => {
+    // Arrange
+    const expectedForumThread = {
+      id: 'thread-123',
+      title: 'A New Thread',
+      body: "The new thread's body",
+      date: '2023-02-09T07:43:19.593Z',
+      username: 'New user 1',
+      comments: [
+        {
+          id: 'comment-123',
+          username: 'user-456',
+          date: '2023-02-09T08:43:19.593Z',
+          content: 'New comment',
+          replies: [
+            {
+              id: 'reply-123',
+              content: 'New reply',
+              date: '2023-02-09T08:43:19.593Z',
+              username: 'user-789',
+            },
+          ],
+        },
+      ],
+    };
+
+    /** creating dependency of use case */
+    const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
+    const mockReplyRepository = new ReplyRepository();
+
+    /** mocking needed function */
+    mockThreadRepository.verifyThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve());
+    mockThreadRepository.getThreadById = jest.fn()
+      .mockImplementation(() => Promise.resolve({
+        id: 'thread-123',
+        title: 'A New Thread',
+        body: "The new thread's body",
+        date: '2023-02-09T07:43:19.593Z',
+        username: 'New user 1',
+      }));
+    mockCommentRepository.getCommentsByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve([
+        {
+          id: 'comment-123',
+          username: 'user-456',
+          date: '2023-02-09T08:43:19.593Z',
+          content: 'New comment',
+          is_delete: false,
+        },
+      ]));
+    mockReplyRepository.getRepliesByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve([
+        {
+          id: 'reply-123',
+          comment_id: 'comment-123',
+          content: 'New reply',
+          date: '2023-02-09T08:43:19.593Z',
+          username: 'user-789',
+          is_delete: false,
+        },
+      ]));
+
+    /** creating use case instance */
+    const threadUseCase = new ThreadUseCase({
+      threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository,
+      replyRepository: mockReplyRepository,
+    });
+
+    // Action
+    const forumThread = await threadUseCase.getThreadById('thread-123');
+
+    // Assert
+    expect(forumThread.comments[0].replies[0].id)
+      .toEqual(expectedForumThread.comments[0].replies[0].id);
+    expect(forumThread.comments[0].replies[0].content)
+      .toEqual(expectedForumThread.comments[0].replies[0].content);
+    expect(forumThread.comments[0].replies[0].date)
+      .toEqual(expectedForumThread.comments[0].replies[0].date);
+    expect(forumThread.comments[0].replies[0].username)
+      .toEqual(expectedForumThread.comments[0].replies[0].username);
+  });
+
+  it('should return correct comment content if the comment has been deleted', async () => {
+    // Arrange
+    const expectedForumThread = {
+      id: 'thread-123',
+      title: 'A New Thread',
+      body: "The new thread's body",
+      date: '2023-02-09T07:43:19.593Z',
+      username: 'New user 1',
+      comments: [
+        {
+          id: 'comment-123',
+          username: 'user-456',
+          date: '2023-02-09T08:43:19.593Z',
+          content: '**komentar telah dihapus**',
+        },
+      ],
+    };
+
+    /** creating dependency of use case */
+    const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
+    const mockReplyRepository = new ReplyRepository();
+
+    /** mocking needed function */
+    mockThreadRepository.verifyThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve());
+    mockThreadRepository.getThreadById = jest.fn()
+      .mockImplementation(() => Promise.resolve({
+        id: 'thread-123',
+        title: 'A New Thread',
+        body: "The new thread's body",
+        date: '2023-02-09T07:43:19.593Z',
+        username: 'New user 1',
+      }));
+    mockCommentRepository.getCommentsByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve([{
+        id: 'comment-123',
+        username: 'user-456',
+        date: '2023-02-09T08:43:19.593Z',
+        content: 'New comment',
+        is_delete: true,
+      }]));
+    mockReplyRepository.getRepliesByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve([]));
+
+    /** creating use case instance */
+    const threadUseCase = new ThreadUseCase({
+      threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository,
+      replyRepository: mockReplyRepository,
+    });
+
+    // Action
+    const forumThread = await threadUseCase.getThreadById('thread-123');
+
+    // Assert
+    expect(forumThread.comments[0].content).toEqual(expectedForumThread.comments[0].content);
+  });
+
+  it('should return correct reply content if the comment has been deleted', async () => {
+    // Arrange
+    const expectedForumThread = {
+      id: 'thread-123',
+      title: 'A New Thread',
+      body: "The new thread's body",
+      date: '2023-02-09T07:43:19.593Z',
+      username: 'New user 1',
+      comments: [
+        {
+          id: 'comment-123',
+          username: 'user-456',
+          date: '2023-02-09T08:43:19.593Z',
+          content: 'New comment',
+          replies: [
+            {
+              id: 'reply-123',
+              content: '**balasan telah dihapus**',
+              date: '2023-02-09T08:43:19.593Z',
+              username: 'user-789',
+            },
+          ],
+        },
+      ],
+    };
+
+    /** creating dependency of use case */
+    const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
+    const mockReplyRepository = new ReplyRepository();
+
+    /** mocking needed function */
+    mockThreadRepository.verifyThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve());
+    mockThreadRepository.getThreadById = jest.fn()
+      .mockImplementation(() => Promise.resolve({
+        id: 'thread-123',
+        title: 'A New Thread',
+        body: "The new thread's body",
+        date: '2023-02-09T07:43:19.593Z',
+        username: 'New user 1',
+      }));
+    mockCommentRepository.getCommentsByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve([{
+        id: 'comment-123',
+        username: 'user-456',
+        date: '2023-02-09T08:43:19.593Z',
+        content: 'New comment',
+        is_delete: true,
+      }]));
+    mockReplyRepository.getRepliesByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve([
+        {
+          id: 'reply-123',
+          comment_id: 'comment-123',
+          content: 'New reply',
+          date: '2023-02-09T08:43:19.593Z',
+          username: 'user-789',
+          is_delete: true,
+        },
+      ]));
+
+    /** creating use case instance */
+    const threadUseCase = new ThreadUseCase({
+      threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository,
+      replyRepository: mockReplyRepository,
+    });
+
+    // Action
+    const forumThread = await threadUseCase.getThreadById('thread-123');
+
+    // Assert
+    expect(forumThread.comments[0].replies[0].content)
+      .toEqual(expectedForumThread.comments[0].replies[0].content);
   });
 });

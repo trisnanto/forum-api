@@ -75,6 +75,7 @@ describe('/threads/{threadId}/comments endpoint', () => {
 
     it('should response 400 when request payload not contain needed property', async () => {
       // Arrange
+      const requestPayload = {};
       const fakeThreadId = 'thread-123';
       const server = await createServer(container);
       await ThreadsTableTestHelper.addThread({
@@ -85,6 +86,7 @@ describe('/threads/{threadId}/comments endpoint', () => {
       const response = await server.inject({
         method: 'POST',
         url: `/threads/${fakeThreadId}/comments`,
+        payload: requestPayload,
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 

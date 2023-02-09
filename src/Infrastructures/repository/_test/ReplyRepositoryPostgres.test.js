@@ -76,7 +76,12 @@ describe('ThreadRepositoryPostgres', () => {
 
       // Assert
       const reply = await RepliesTableTestHelper.findReplyById('reply-123');
-      expect(reply).toHaveLength(1);
+      expect(reply.id).toEqual('reply-123');
+      expect(reply.thread_id).toEqual('thread-123');
+      expect(reply.comment_id).toEqual('comment-123');
+      expect(reply.content).toEqual('New reply');
+      expect(reply.owner).toEqual('user-123');
+      expect(reply.is_delete).toEqual(false);
     });
   });
 
@@ -103,6 +108,31 @@ describe('ThreadRepositoryPostgres', () => {
 
       // Assert
       expect(deletedReplyId).toStrictEqual(fakeReplyId);
+    });
+
+    it('should return is_delete = true when comment has been deleted', async () => {
+      // Arrange
+      const fakeIdGenerator = () => '123'; // stub!
+      const fakeThreadId = 'thread-123'; // stub!
+      const fakeCommentId = 'comment-123'; // stub!
+      const fakeReplyId = 'reply-123'; // stub!
+      const fakeCredentialId = 'user-123'; // stub!
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action
+      await UsersTableTestHelper.addUser({
+        id: fakeCredentialId, username: 'New User',
+      });
+      await ThreadsTableTestHelper.addThread({ id: fakeThreadId, title: 'New title', owner: fakeCredentialId });
+      await CommentsTableTestHelper.addComment({ id: fakeCommentId, content: 'New comment', owner: fakeCredentialId });
+      await RepliesTableTestHelper.addReply({
+        id: fakeReplyId, threadId: fakeThreadId, commentId: fakeCommentId, content: 'New reply', owner: fakeCredentialId,
+      });
+      await replyRepositoryPostgres.deleteReplyById(fakeReplyId);
+
+      // Assert
+      const reply = await RepliesTableTestHelper.findReplyById(fakeReplyId);
+      expect(reply.is_delete).toEqual(true);
     });
   });
 

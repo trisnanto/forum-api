@@ -21,7 +21,7 @@ const CommentsTableTestHelper = {
     };
 
     const result = await pool.query(query);
-    return result.rows;
+    return result.rows[0];
   },
 
   async deleteCommentById(id) {

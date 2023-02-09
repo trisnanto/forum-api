@@ -12,11 +12,6 @@ class CommentUseCase {
     return this._commentRepository.addComment(useCasePayload, threadId, credentialId);
   }
 
-  async getCommentById(useCasePayload) {
-    await this._commentRepository.verifyCommentId(useCasePayload);
-    return this._commentRepository.getCommentById(useCasePayload);
-  }
-
   async deleteCommentById(useCasePayload, threadId, credentialId) {
     await this._threadRepository.verifyThreadId(threadId);
     await this._commentRepository.verifyCommentId(useCasePayload);
@@ -25,7 +20,7 @@ class CommentUseCase {
   }
 
   _verifyPayload(payload) {
-    const { content } = (payload) || { content: null };
+    const { content } = payload;
     if (!content) {
       throw new Error('COMMENT_USE_CASE.NOT_CONTAIN_CONTENT');
     }
