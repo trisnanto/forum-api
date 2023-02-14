@@ -40,7 +40,6 @@ describe('a ForumThread entities', () => {
     // Assert
     expect(forumThread.id).toEqual(payload.id);
     expect(forumThread.title).toEqual(payload.title);
-    expect(forumThread.body).toEqual(payload.body);
     expect(forumThread.owner).toEqual(payload.owner);
   });
 });

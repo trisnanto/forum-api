@@ -23,7 +23,7 @@ class ReplyUseCase {
   }
 
   _verifyPayload(payload) {
-    const { content } = (payload) || { content: null };
+    const { content } = payload;
     if (!content) {
       throw new Error('REPLY_USE_CASE.NOT_CONTAIN_CONTENT');
     }

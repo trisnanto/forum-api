@@ -20,7 +20,6 @@ describe('AddThreadUseCase', () => {
     const expectedForumThread = new ForumThread({
       id: 'thread-123',
       title: 'A New Thread',
-      body: "The new thread's body",
       owner: fakeCredentialID,
     });
 
@@ -32,7 +31,6 @@ describe('AddThreadUseCase', () => {
       .mockImplementation(() => Promise.resolve(new ForumThread({
         id: 'thread-123',
         title: 'A New Thread',
-        body: "The new thread's body",
         owner: 'user-123',
       })));
 
@@ -75,7 +73,7 @@ describe('GetThreadUseCase', () => {
 
     /** mocking needed function */
     mockThreadRepository.verifyThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+      .mockImplementation(() => Promise.resolve('thread-123'));
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve({
         id: 'thread-123',
@@ -138,7 +136,7 @@ describe('GetThreadUseCase', () => {
 
     /** mocking needed function */
     mockThreadRepository.verifyThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+      .mockImplementation(() => Promise.resolve('thread-123'));
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve({
         id: 'thread-123',
@@ -211,7 +209,7 @@ describe('GetThreadUseCase', () => {
 
     /** mocking needed function */
     mockThreadRepository.verifyThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+      .mockImplementation(() => Promise.resolve('thread-123'));
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve({
         id: 'thread-123',
@@ -288,7 +286,7 @@ describe('GetThreadUseCase', () => {
 
     /** mocking needed function */
     mockThreadRepository.verifyThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+      .mockImplementation(() => Promise.resolve('thread-123'));
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve({
         id: 'thread-123',
@@ -355,7 +353,7 @@ describe('GetThreadUseCase', () => {
 
     /** mocking needed function */
     mockThreadRepository.verifyThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+      .mockImplementation(() => Promise.resolve('thread-123'));
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve({
         id: 'thread-123',

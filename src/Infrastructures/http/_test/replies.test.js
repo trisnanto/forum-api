@@ -80,6 +80,7 @@ describe('/threads/{threadId}/comments/{commentId}/ endpoint', () => {
 
     it('should response 400 when request payload not contain needed property', async () => {
       // Arrange
+      const requestPayload = {};
       const fakeThreadId = 'thread-123';
       const fakeCommentId = 'comment-123';
       const server = await createServer(container);
@@ -94,6 +95,7 @@ describe('/threads/{threadId}/comments/{commentId}/ endpoint', () => {
       const response = await server.inject({
         method: 'POST',
         url: `/threads/${fakeThreadId}/comments/${fakeCommentId}/replies`,
+        payload: requestPayload,
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
