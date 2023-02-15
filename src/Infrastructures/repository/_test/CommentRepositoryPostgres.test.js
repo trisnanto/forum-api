@@ -7,7 +7,7 @@ const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 
-describe('ThreadRepositoryPostgres', () => {
+describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
     await ThreadsTableTestHelper.cleanTable();
     await CommentsTableTestHelper.cleanTable();
@@ -76,23 +76,23 @@ describe('ThreadRepositoryPostgres', () => {
   });
 
   describe('deleteCommentById function', () => {
-    it('should return commentId when comment has been deleted', async () => {
-      // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeCredentialId = 'user-123';
-      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+    // it('should return commentId when comment has been deleted', async () => {
+    //   // Arrange
+    //   const fakeIdGenerator = () => '123'; // stub!
+    //   const fakeCredentialId = 'user-123';
+    //   const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
-      // Action
-      await UsersTableTestHelper.addUser({
-        id: fakeCredentialId, username: 'New User',
-      });
-      await ThreadsTableTestHelper.addThread({ title: 'New title', owner: fakeCredentialId });
-      await CommentsTableTestHelper.addComment({ content: 'New comment' });
-      const deletedCommentId = await commentRepositoryPostgres.deleteCommentById('comment-123', fakeCredentialId);
+    //   // Action
+    //   await UsersTableTestHelper.addUser({
+    //     id: fakeCredentialId, username: 'New User',
+    //   });
+    //   await ThreadsTableTestHelper.addThread({ title: 'New title', owner: fakeCredentialId });
+    //   await CommentsTableTestHelper.addComment({ content: 'New comment' });
+    //   const deletedCommentId = await commentRepositoryPostgres.deleteCommentById('comment-123', fakeCredentialId);
 
-      // Assert
-      expect(deletedCommentId).toStrictEqual('comment-123');
-    });
+    //   // Assert
+    //   expect(deletedCommentId).toStrictEqual('comment-123');
+    // });
 
     it('should return is_delete = true when comment has been deleted', async () => {
       // Arrange
@@ -192,6 +192,7 @@ describe('ThreadRepositoryPostgres', () => {
         date: comments[0].date,
         content: 'New comment 1',
         is_delete: false,
+        like_count: '0',
       });
       expect(comments[1]).toStrictEqual({
         id: fakeCommentId2,
@@ -199,6 +200,7 @@ describe('ThreadRepositoryPostgres', () => {
         date: comments[1].date,
         content: 'New comment 2',
         is_delete: false,
+        like_count: '0',
       });
     });
   });

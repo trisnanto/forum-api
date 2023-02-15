@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 exports.up = (pgm) => {
   // membuat table comments
   pgm.createTable('comments', {
@@ -18,8 +17,9 @@ exports.up = (pgm) => {
       notNull: true,
     },
     date: {
-      type: 'TEXT',
+      type: 'timestamp',
       notNull: true,
+      default: pgm.func('current_timestamp'),
     },
     is_delete: {
       type: 'BOOLEAN',
@@ -35,6 +35,6 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  // menghapus tabel collaborations
+  // menghapus tabel comments
   pgm.dropTable('comments');
 };

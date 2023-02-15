@@ -31,9 +31,9 @@ class CommentRepositoryPostgres extends CommentRepository {
       text: 'UPDATE comments SET is_delete = true WHERE id = $1 RETURNING id',
       values: [commentId],
     };
-    const result = await this._pool.query(query);
+    await this._pool.query(query);
 
-    return result.rows[0].id;
+    // return result.rows[0].id;
   }
 
   async getCommentById(commentId) {
@@ -48,7 +48,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async getCommentsByThreadId(threadId) {
     const query1 = {
-      text: 'SELECT comments.id, users.username, date, content, is_delete FROM comments LEFT JOIN users ON comments.owner = users.id WHERE comments.thread_id = $1 ORDER BY date ASC',
+      text: 'SELECT comments.id, users.username, comments.date, content, is_delete, COUNT(likes.id) AS like_count FROM comments LEFT JOIN users ON comments.owner = users.id LEFT JOIN likes ON likes.comment_id = comments.id WHERE comments.thread_id = $1 GROUP BY comments.id, users.username ORDER BY date ASC',
       values: [threadId],
     };
     const result1 = await this._pool.query(query1);

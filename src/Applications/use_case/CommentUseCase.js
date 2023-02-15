@@ -16,7 +16,7 @@ class CommentUseCase {
     await this._threadRepository.verifyThreadId(threadId);
     await this._commentRepository.verifyCommentId(useCasePayload);
     await this._commentRepository.verifyCommentOwnership(useCasePayload, credentialId);
-    return this._commentRepository.deleteCommentById(useCasePayload);
+    await this._commentRepository.deleteCommentById(useCasePayload);
   }
 
   _verifyPayload(payload) {

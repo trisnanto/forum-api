@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 exports.up = (pgm) => {
   // membuat table replies
   pgm.createTable('replies', {
@@ -12,6 +11,7 @@ exports.up = (pgm) => {
     },
     comment_id: {
       type: 'VARCHAR(50)',
+      notNull: true,
     },
     content: {
       type: 'TEXT',
@@ -22,8 +22,9 @@ exports.up = (pgm) => {
       notNull: true,
     },
     date: {
-      type: 'TEXT',
+      type: 'timestamp',
       notNull: true,
+      default: pgm.func('current_timestamp'),
     },
     is_delete: {
       type: 'BOOLEAN',
@@ -42,6 +43,6 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  // menghapus tabel collaborations
+  // menghapus tabel replies
   pgm.dropTable('replies');
 };

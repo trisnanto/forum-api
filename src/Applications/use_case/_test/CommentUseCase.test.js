@@ -4,6 +4,15 @@ const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const CommentUseCase = require('../CommentUseCase');
 
+/** creating dependency of use case */
+const mockThreadRepository = new ThreadRepository();
+const mockCommentRepository = new CommentRepository();
+
+/** creating use case instance */
+const commentUseCase = new CommentUseCase({
+  threadRepository: mockThreadRepository, commentRepository: mockCommentRepository,
+});
+
 describe('AddCommentUseCase', () => {
   /**
    * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
@@ -25,27 +34,16 @@ describe('AddCommentUseCase', () => {
       owner: fakeCredentialId,
     };
 
-    /** creating dependency of use case */
-    const mockThreadRepository = new ThreadRepository();
-    const mockCommentRepository = new CommentRepository();
-
     /** mocking needed function */
-    mockThreadRepository.verifyThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve('thread-123'));
-    mockCommentRepository.addComment = jest.fn()
-      .mockImplementation(() => Promise.resolve({
-        id: 'comment-123',
-        content: 'New comment',
-        owner: 'user-123',
-      }));
-
-    /** creating use case instance */
-    const getCommentUseCase = new CommentUseCase({
-      threadRepository: mockThreadRepository, commentRepository: mockCommentRepository,
-    });
+    mockThreadRepository.verifyThreadId = jest.fn(() => Promise.resolve('thread-123'));
+    mockCommentRepository.addComment = jest.fn(() => Promise.resolve({
+      id: 'comment-123',
+      content: 'New comment',
+      owner: 'user-123',
+    }));
 
     // Action
-    const addedComment = await getCommentUseCase.addComment(useCasePayload, fakeThreadId, fakeCredentialId);
+    const addedComment = await commentUseCase.addComment(useCasePayload, fakeThreadId, fakeCredentialId);
 
     // Assert
     expect(addedComment).toStrictEqual(expectedAddedComment);
@@ -63,32 +61,19 @@ describe('DeleteCommentUseCase', () => {
     const fakeThreadId = 'thread-123';
     const useCasePayload = 'comment-123';
     const credentialId = 'user-123';
-    const expectedDeletedComment = ('comment-123');
-
-    /** creating dependency of use case */
-    const mockThreadRepository = new ThreadRepository();
-    const mockCommentRepository = new CommentRepository();
+    // const expectedDeletedComment = ('comment-123');
 
     /** mocking needed function */
-    mockThreadRepository.verifyThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve('thread-123'));
-    mockCommentRepository.verifyCommentId = jest.fn()
-      .mockImplementation(() => Promise.resolve('comment-123'));
-    mockCommentRepository.verifyCommentOwnership = jest.fn()
-      .mockImplementation(() => Promise.resolve('user-123'));
-    mockCommentRepository.deleteCommentById = jest.fn()
-      .mockImplementation(() => Promise.resolve('comment-123'));
-
-    /** creating use case instance */
-    const commentUseCase = new CommentUseCase({
-      threadRepository: mockThreadRepository, commentRepository: mockCommentRepository,
-    });
+    mockThreadRepository.verifyThreadId = jest.fn(() => Promise.resolve('thread-123'));
+    mockCommentRepository.verifyCommentId = jest.fn(() => Promise.resolve('comment-123'));
+    mockCommentRepository.verifyCommentOwnership = jest.fn(() => Promise.resolve('user-123'));
+    mockCommentRepository.deleteCommentById = jest.fn(() => Promise.resolve());
 
     // Action
-    const deletedComment = await commentUseCase.deleteCommentById(useCasePayload, fakeThreadId, credentialId);
+    await commentUseCase.deleteCommentById(useCasePayload, fakeThreadId, credentialId);
 
     // Assert
-    expect(deletedComment).toStrictEqual(expectedDeletedComment);
+    // expect(deletedComment).toStrictEqual(expectedDeletedComment);
     expect(mockThreadRepository.verifyThreadId).toBeCalledWith(fakeThreadId);
     expect(mockCommentRepository.verifyCommentId).toBeCalledWith(useCasePayload);
     expect(mockCommentRepository.verifyCommentOwnership).toBeCalledWith(useCasePayload, credentialId);
@@ -97,37 +82,21 @@ describe('DeleteCommentUseCase', () => {
 });
 
 describe('_verifyPayload function', () => {
-  it('should throw error when payload did not contain needed property', () => {
+  it('should throw error when payload did not contain needed property', async () => {
     // Arrange
     const payload = {};
-    /** creating dependency of use case */
-    const mockThreadRepository = new ThreadRepository();
-    const mockCommentRepository = new CommentRepository();
-    /** creating use case instance */
-    const commentUseCase = new CommentUseCase({
-      threadRepository: mockThreadRepository,
-      commentRepository: mockCommentRepository,
-    });
 
     // Action and Assert
-    expect(() => commentUseCase._verifyPayload(payload)).toThrowError('COMMENT_USE_CASE.NOT_CONTAIN_CONTENT');
+    await expect(commentUseCase.addComment(payload, 'thread-123', 'user-123')).rejects.toThrowError('COMMENT_USE_CASE.NOT_CONTAIN_CONTENT');
   });
 
-  it('should throw error when payload did not meet data type specification', () => {
+  it('should throw error when payload did not meet data type specification', async () => {
     // Arrange
     const payload = {
       content: 123,
     };
-    /** creating dependency of use case */
-    const mockThreadRepository = new ThreadRepository();
-    const mockCommentRepository = new CommentRepository();
-    /** creating use case instance */
-    const commentUseCase = new CommentUseCase({
-      threadRepository: mockThreadRepository,
-      commentRepository: mockCommentRepository,
-    });
 
     // Action and Assert
-    expect(() => commentUseCase._verifyPayload(payload)).toThrowError('COMMENT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
+    await expect(commentUseCase.addComment(payload, 'thread-123', 'user-123')).rejects.toThrowError('COMMENT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 });
