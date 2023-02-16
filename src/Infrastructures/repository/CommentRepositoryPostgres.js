@@ -32,8 +32,6 @@ class CommentRepositoryPostgres extends CommentRepository {
       values: [commentId],
     };
     await this._pool.query(query);
-
-    // return result.rows[0].id;
   }
 
   async getCommentById(commentId) {

@@ -61,7 +61,6 @@ describe('DeleteCommentUseCase', () => {
     const fakeThreadId = 'thread-123';
     const useCasePayload = 'comment-123';
     const credentialId = 'user-123';
-    // const expectedDeletedComment = ('comment-123');
 
     /** mocking needed function */
     mockThreadRepository.verifyThreadId = jest.fn(() => Promise.resolve('thread-123'));
@@ -73,7 +72,6 @@ describe('DeleteCommentUseCase', () => {
     await commentUseCase.deleteCommentById(useCasePayload, fakeThreadId, credentialId);
 
     // Assert
-    // expect(deletedComment).toStrictEqual(expectedDeletedComment);
     expect(mockThreadRepository.verifyThreadId).toBeCalledWith(fakeThreadId);
     expect(mockCommentRepository.verifyCommentId).toBeCalledWith(useCasePayload);
     expect(mockCommentRepository.verifyCommentOwnership).toBeCalledWith(useCasePayload, credentialId);

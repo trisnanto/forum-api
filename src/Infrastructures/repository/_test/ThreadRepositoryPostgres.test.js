@@ -26,7 +26,7 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'A title',
         body: 'A body',
       });
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeCredentialId = 'user-123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
@@ -47,7 +47,7 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'A title',
         body: 'A body',
       });
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeCredentialId = 'user-123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
@@ -69,7 +69,7 @@ describe('ThreadRepositoryPostgres', () => {
   describe('getThreadById function', () => {
     it('should return forum thread correctly', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeUserId = 'user-123';
       const fakeThreadId = 'thread-123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
@@ -98,7 +98,7 @@ describe('ThreadRepositoryPostgres', () => {
   describe('verifyThreadId function', () => {
     it('should return NotFoundError when threadId not found', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action and assert
@@ -108,7 +108,7 @@ describe('ThreadRepositoryPostgres', () => {
 
     it('should return threadId if founded', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeUserId = 'user-123';
       const fakeThreadId = 'thread-123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);

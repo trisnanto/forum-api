@@ -21,10 +21,10 @@ describe('LikeRepositoryPostgres', () => {
   describe('addLike function', () => {
     it('should persist new like', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeThreadId = 'thread-123'; // stub!
-      const fakeCommentId = 'comment-123'; // stub!
-      const fakeCredentialId = 'user-123'; // stub!
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
+      const fakeCommentId = 'comment-123';
+      const fakeCredentialId = 'user-123';
       const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
@@ -50,11 +50,11 @@ describe('LikeRepositoryPostgres', () => {
   describe('deleteLikeById function', () => {
     it('should return undefined when like has been deleted', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeThreadId = 'thread-123'; // stub!
-      const fakeCommentId = 'comment-123'; // stub!
-      const fakeLikeId = 'like-123'; // stub!
-      const fakeCredentialId = 'user-123'; // stub!
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
+      const fakeCommentId = 'comment-123';
+      const fakeLikeId = 'like-123';
+      const fakeCredentialId = 'user-123';
       const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action

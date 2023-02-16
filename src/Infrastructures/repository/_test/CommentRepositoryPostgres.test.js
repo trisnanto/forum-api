@@ -24,8 +24,8 @@ describe('CommentRepositoryPostgres', () => {
       const commentPayload = {
         content: 'New comment',
       };
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeThreadId = 'thread-123'; // stub!
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
       const fakeCredentialId = 'user-123';
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
@@ -52,8 +52,8 @@ describe('CommentRepositoryPostgres', () => {
       const commentPayload = {
         content: 'New comment',
       };
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeThreadId = 'thread-123'; // stub!
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
       const fakeCredentialId = 'user-123';
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
@@ -76,27 +76,9 @@ describe('CommentRepositoryPostgres', () => {
   });
 
   describe('deleteCommentById function', () => {
-    // it('should return commentId when comment has been deleted', async () => {
-    //   // Arrange
-    //   const fakeIdGenerator = () => '123'; // stub!
-    //   const fakeCredentialId = 'user-123';
-    //   const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
-
-    //   // Action
-    //   await UsersTableTestHelper.addUser({
-    //     id: fakeCredentialId, username: 'New User',
-    //   });
-    //   await ThreadsTableTestHelper.addThread({ title: 'New title', owner: fakeCredentialId });
-    //   await CommentsTableTestHelper.addComment({ content: 'New comment' });
-    //   const deletedCommentId = await commentRepositoryPostgres.deleteCommentById('comment-123', fakeCredentialId);
-
-    //   // Assert
-    //   expect(deletedCommentId).toStrictEqual('comment-123');
-    // });
-
     it('should return is_delete = true when comment has been deleted', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeCredentialId = 'user-123';
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
@@ -116,7 +98,7 @@ describe('CommentRepositoryPostgres', () => {
   describe('getCommentById function', () => {
     it('should return thread comment correctly', async () => {
     // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeThreadId = 'thread-123';
       const fakeUserId = 'user-123';
       const fakeCommentId = 'comment-123';
@@ -149,7 +131,7 @@ describe('CommentRepositoryPostgres', () => {
   describe('getCommentsByThreadId function', () => {
     it('should return empty array when comments not found', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action and assert
@@ -159,7 +141,7 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should return thread comments correctly', async () => {
     // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeThreadId = 'thread-123';
       const fakeUserId = 'user-123';
       const fakeCommentId1 = 'comment-123';
@@ -208,7 +190,7 @@ describe('CommentRepositoryPostgres', () => {
   describe('verifyCommentId function', () => {
     it('should return NotFoundError when comment not found', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action and assert
@@ -218,7 +200,7 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should return commentId correctly', async () => {
     // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeThreadId = 'thread-123';
       const fakeUserId = 'user-123';
       const fakeCommentId = 'comment-123';
@@ -245,7 +227,7 @@ describe('CommentRepositoryPostgres', () => {
   describe('verifyCommentOwnership function', () => {
     it('should return AuthorizationError when not the owner of the comment', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeThreadId = 'thread-123';
       const fakeUserId = 'user-123';
       const fakeCommentId = 'comment-123';
@@ -269,7 +251,7 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should return ownerId correctly', async () => {
     // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeThreadId = 'thread-123';
       const fakeUserId = 'user-123';
       const fakeCommentId = 'comment-123';

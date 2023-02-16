@@ -26,10 +26,10 @@ describe('ReplyRepositoryPostgres', () => {
       const replyPayload = {
         content: 'New reply',
       };
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeThreadId = 'thread-123'; // stub!
-      const fakeCommentId = 'comment-123'; // stub!
-      const fakeCredentialId = 'user-123'; // stub!
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
+      const fakeCommentId = 'comment-123';
+      const fakeCredentialId = 'user-123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
@@ -57,10 +57,10 @@ describe('ReplyRepositoryPostgres', () => {
       const replyPayload = {
         content: 'New reply',
       };
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeThreadId = 'thread-123'; // stub!
-      const fakeCommentId = 'comment-123'; // stub!
-      const fakeCredentialId = 'user-123'; // stub!
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
+      const fakeCommentId = 'comment-123';
+      const fakeCredentialId = 'user-123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
@@ -89,11 +89,11 @@ describe('ReplyRepositoryPostgres', () => {
   describe('deleteReplyById function', () => {
     it('should return replyId when comment has been deleted', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeThreadId = 'thread-123'; // stub!
-      const fakeCommentId = 'comment-123'; // stub!
-      const fakeReplyId = 'reply-123'; // stub!
-      const fakeCredentialId = 'user-123'; // stub!
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
+      const fakeCommentId = 'comment-123';
+      const fakeReplyId = 'reply-123';
+      const fakeCredentialId = 'user-123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
@@ -113,11 +113,11 @@ describe('ReplyRepositoryPostgres', () => {
 
     it('should return is_delete = true when comment has been deleted', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeThreadId = 'thread-123'; // stub!
-      const fakeCommentId = 'comment-123'; // stub!
-      const fakeReplyId = 'reply-123'; // stub!
-      const fakeCredentialId = 'user-123'; // stub!
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
+      const fakeCommentId = 'comment-123';
+      const fakeReplyId = 'reply-123';
+      const fakeCredentialId = 'user-123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
@@ -140,7 +140,7 @@ describe('ReplyRepositoryPostgres', () => {
   describe('getRepliesByThreadId function', () => {
     it('should return empty array when replies not found', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action and assert
@@ -150,7 +150,7 @@ describe('ReplyRepositoryPostgres', () => {
 
     it('should return comment replies correctly', async () => {
     // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeThreadId = 'thread-123';
       const fakeUserId = 'user-123';
       const fakeCommentId = 'comment-123';
@@ -203,7 +203,7 @@ describe('ReplyRepositoryPostgres', () => {
   describe('verifyReplyId function', () => {
     it('should return NotFoundError when reply not found', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action and assert
@@ -213,11 +213,11 @@ describe('ReplyRepositoryPostgres', () => {
 
     it('should return replyId correctly', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeThreadId = 'thread-123'; // stub!
-      const fakeCommentId = 'comment-123'; // stub!
-      const fakeReplyId = 'reply-123'; // stub!
-      const fakeCredentialId = 'user-123'; // stub!
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
+      const fakeCommentId = 'comment-123';
+      const fakeReplyId = 'reply-123';
+      const fakeCredentialId = 'user-123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
@@ -240,11 +240,11 @@ describe('ReplyRepositoryPostgres', () => {
   describe('verifyReplyOwnership function', () => {
     it('should return AuthorizationError when wrong reply owner', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
-      const fakeThreadId = 'thread-123'; // stub!
-      const fakeCommentId = 'comment-123'; // stub!
-      const fakeReplyId = 'reply-123'; // stub!
-      const fakeCredentialId = 'user-123'; // stub!
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
+      const fakeCommentId = 'comment-123';
+      const fakeReplyId = 'reply-123';
+      const fakeCredentialId = 'user-123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
@@ -264,12 +264,12 @@ describe('ReplyRepositoryPostgres', () => {
 
     it('should return ownerId correctly', async () => {
       // Arrange
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '123';
       const fakeThreadId = 'thread-123';
       const fakeUserId = 'user-123';
-      const fakeCredentialId = 'user-123'; // stub!
+      const fakeCredentialId = 'user-123';
       const fakeCommentId = 'comment-123';
-      const fakeReplyId = 'reply-123'; // stub!
+      const fakeReplyId = 'reply-123';
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
