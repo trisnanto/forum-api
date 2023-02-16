@@ -1,0 +1,61 @@
+name: Continuous Integration
+ 
+on: 
+  pull_request:
+    branches:
+      - main
+ 
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    # Service containers to run with `runner-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+ 
+    strategy:
+      matrix:
+        node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+ 
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install migrate and test
+      run: |
+        npm install
+        npm run migrate up
+        npm run test
+      env:
+        CI: true
+        PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
+        PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
+        PGDATABASE_TEST: ${{ secrets.PGDATABASE_TEST }}
+        PGPASSWORD_TEST: ${{ secrets.PGPASSWORD_TEST }}
+        PGPORT_TEST: ${{ secrets.PGPORT_TEST }}
+        PGHOST: ${{ secrets.PGHOST_TEST }}
+        PGUSER: ${{ secrets.PGUSER_TEST }}
+        PGDATABASE: ${{ secrets.PGDATABASE_TEST }}
+        PGPASSWORD: ${{ secrets.PGPASSWORD_TEST }}
+        PGPORT: ${{ secrets.PGPORT_TEST }}
+        ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
+        REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
+        ACCESS_TOKEN_AGE : ${{ secrets.ACCESS_TOKEN_AGE }}
