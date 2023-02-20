@@ -42,7 +42,7 @@ describe('ReplyRepositoryPostgres', () => {
       await CommentsTableTestHelper.addComment({
         id: fakeCommentId, content: 'New comment', owner: fakeCredentialId,
       });
-      const reply = await replyRepositoryPostgres.addReply(replyPayload, fakeThreadId, fakeCommentId, fakeCredentialId);
+      const reply = await replyRepositoryPostgres.addReply(replyPayload, fakeCommentId, fakeCredentialId);
 
       // Assert
       expect(reply).toStrictEqual({
@@ -73,12 +73,11 @@ describe('ReplyRepositoryPostgres', () => {
       await CommentsTableTestHelper.addComment({
         id: fakeCommentId, content: 'New comment', owner: fakeCredentialId,
       });
-      await replyRepositoryPostgres.addReply(replyPayload, fakeThreadId, fakeCommentId, fakeCredentialId);
+      await replyRepositoryPostgres.addReply(replyPayload, fakeCommentId, fakeCredentialId);
 
       // Assert
       const reply = await RepliesTableTestHelper.findReplyById('reply-123');
       expect(reply.id).toEqual('reply-123');
-      expect(reply.thread_id).toEqual('thread-123');
       expect(reply.comment_id).toEqual('comment-123');
       expect(reply.content).toEqual('New reply');
       expect(reply.owner).toEqual('user-123');
@@ -170,11 +169,11 @@ describe('ReplyRepositoryPostgres', () => {
         id: fakeCommentId, content: 'New comment', owner: fakeUserId,
       });
       await RepliesTableTestHelper.addReply({
-        id: fakeReplyId1, threadId: fakeThreadId, commentId: fakeCommentId, content: 'New reply 1', owner: fakeUserId,
+        id: fakeReplyId1, commentId: fakeCommentId, content: 'New reply 1', owner: fakeUserId,
       });
       await delay(500);
       await RepliesTableTestHelper.addReply({
-        id: fakeReplyId2, threadId: fakeThreadId, commentId: fakeCommentId, content: 'New reply 2', owner: fakeUserId,
+        id: fakeReplyId2, commentId: fakeCommentId, content: 'New reply 2', owner: fakeUserId,
       });
 
       // Assert
@@ -227,7 +226,7 @@ describe('ReplyRepositoryPostgres', () => {
       await ThreadsTableTestHelper.addThread({ id: fakeThreadId, title: 'New title', owner: fakeCredentialId });
       await CommentsTableTestHelper.addComment({ id: fakeCommentId, content: 'New comment', owner: fakeCredentialId });
       await RepliesTableTestHelper.addReply({
-        id: fakeReplyId, threadId: fakeThreadId, commentId: fakeCommentId, content: 'New reply', owner: fakeCredentialId,
+        id: fakeReplyId, commentId: fakeCommentId, content: 'New reply', owner: fakeCredentialId,
       });
 
       // Assert
@@ -254,7 +253,7 @@ describe('ReplyRepositoryPostgres', () => {
       await ThreadsTableTestHelper.addThread({ id: fakeThreadId, title: 'New title', owner: fakeCredentialId });
       await CommentsTableTestHelper.addComment({ id: fakeCommentId, content: 'New comment', owner: fakeCredentialId });
       await RepliesTableTestHelper.addReply({
-        id: fakeReplyId, threadId: fakeThreadId, commentId: fakeCommentId, content: 'New reply', owner: fakeCredentialId,
+        id: fakeReplyId, commentId: fakeCommentId, content: 'New reply', owner: fakeCredentialId,
       });
 
       // Assert
@@ -283,7 +282,7 @@ describe('ReplyRepositoryPostgres', () => {
         id: fakeCommentId, content: 'New comment', owner: fakeUserId,
       });
       await RepliesTableTestHelper.addReply({
-        id: fakeReplyId, threadId: fakeThreadId, commentId: fakeCommentId, content: 'New reply', owner: fakeCredentialId,
+        id: fakeReplyId, commentId: fakeCommentId, content: 'New reply', owner: fakeCredentialId,
       });
 
       // Assert

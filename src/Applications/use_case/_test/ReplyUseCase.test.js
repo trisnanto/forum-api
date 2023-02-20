@@ -55,7 +55,7 @@ describe('AddReplyUseCase', () => {
     expect(addedReply).toStrictEqual(expectedAddedReply);
     expect(mockThreadRepository.verifyThreadId).toBeCalledWith(fakeThreadId);
     expect(mockCommentRepository.verifyCommentId).toBeCalledWith(fakeCommentId);
-    expect(mockReplyRepository.addReply).toBeCalledWith(useCasePayload, fakeThreadId, fakeCommentId, fakeCredentialId);
+    expect(mockReplyRepository.addReply).toBeCalledWith(useCasePayload, fakeCommentId, fakeCredentialId);
   });
 });
 

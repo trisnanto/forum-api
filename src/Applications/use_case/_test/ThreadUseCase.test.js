@@ -68,11 +68,11 @@ describe('GetThreadUseCase', () => {
           id: 'comment-123',
           username: 'user-456',
           date: '2023-02-09T08:43:19.593Z',
-          content: 'New comment',
+          content: 'New comment 123',
           replies: [
             {
               id: 'reply-123',
-              content: 'New reply',
+              content: 'New reply 123',
               date: '2023-02-09T08:43:19.593Z',
               username: 'user-789',
             },
@@ -118,7 +118,7 @@ describe('GetThreadUseCase', () => {
         id: 'comment-123',
         username: 'user-456',
         date: '2023-02-09T08:43:19.593Z',
-        content: 'New comment',
+        content: 'New comment 123',
         is_delete: false,
         like_count: '0',
       },
@@ -126,7 +126,7 @@ describe('GetThreadUseCase', () => {
         id: 'comment-456',
         username: 'user-789',
         date: '2023-02-09T08:43:19.593Z',
-        content: '**komentar telah dihapus**',
+        content: 'New comment 456',
         is_delete: true,
         like_count: '0',
       }]));
@@ -134,7 +134,7 @@ describe('GetThreadUseCase', () => {
       {
         id: 'reply-123',
         comment_id: 'comment-123',
-        content: 'New reply',
+        content: 'New reply 123',
         date: '2023-02-09T08:43:19.593Z',
         username: 'user-789',
         is_delete: false,
@@ -142,7 +142,7 @@ describe('GetThreadUseCase', () => {
       {
         id: 'reply-456',
         comment_id: 'comment-456',
-        content: '**balasan telah dihapus**',
+        content: 'New reply 456',
         date: '2023-02-09T08:43:19.593Z',
         username: 'user-789',
         is_delete: true,

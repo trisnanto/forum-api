@@ -3,12 +3,12 @@ const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const RepliesTableTestHelper = {
   async addReply({
-    id = 'reply-123', threadId = 'thread-123', commentId = 'comment-123', content = 'New reply', owner = 'user-123',
+    id = 'reply-123', commentId = 'comment-123', content = 'New reply', owner = 'user-123',
   }) {
     const date = new Date().toISOString();
     const query = {
-      text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5, $6)',
-      values: [id, threadId, commentId, content, owner, date],
+      text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5)',
+      values: [id, commentId, content, owner, date],
     };
 
     await pool.query(query);

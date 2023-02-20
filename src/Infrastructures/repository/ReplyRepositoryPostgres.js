@@ -11,14 +11,14 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     this._idGenerator = idGenerator;
   }
 
-  async addReply(replyPayload, threadId, commentId, credentialId) {
+  async addReply(replyPayload, commentId, credentialId) {
     const { content } = replyPayload;
     const id = `reply-${this._idGenerator()}`;
     const date = new Date().toISOString();
 
     const query = {
-      text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5, $6) RETURNING id, content, owner',
-      values: [id, threadId, commentId, content, credentialId, date],
+      text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5) RETURNING id, content, owner',
+      values: [id, commentId, content, credentialId, date],
     };
 
     const { rows } = await this._pool.query(query);
@@ -38,7 +38,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
   async getRepliesByThreadId(threadId) {
     const query = {
-      text: 'SELECT replies.id, comment_id, content, date, users.username, is_delete FROM replies LEFT JOIN users ON replies.owner = users.id WHERE replies.thread_id = $1 ORDER BY date ASC',
+      text: 'SELECT replies.id, comment_id, replies.content, replies.date, users.username, replies.is_delete FROM replies LEFT JOIN comments ON replies.comment_id = comments.id LEFT JOIN users ON replies.owner = users.id WHERE comments.thread_id = $1 ORDER BY date ASC',
       values: [threadId],
     };
     const result = await this._pool.query(query);

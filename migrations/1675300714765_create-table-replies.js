@@ -5,10 +5,6 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
-    thread_id: {
-      type: 'VARCHAR(50)',
-      notNull: true,
-    },
     comment_id: {
       type: 'VARCHAR(50)',
       notNull: true,
@@ -31,9 +27,6 @@ exports.up = (pgm) => {
       default: false,
     },
   });
-
-  // memberikan constraint foreign key pada kolom thread_id terhadap threads.id
-  pgm.addConstraint('replies', 'fk_replies.thread_id_threads.id', 'FOREIGN KEY(thread_id) REFERENCES threads(id) ON DELETE CASCADE');
 
   // memberikan constraint foreign key pada kolom comment_id terhadap comments.id
   pgm.addConstraint('replies', 'fk_replies.comment_id_comments.id', 'FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE');

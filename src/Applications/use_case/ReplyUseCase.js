@@ -11,7 +11,7 @@ class ReplyUseCase {
     this._verifyPayload(useCasePayload);
     await this._threadRepository.verifyThreadId(threadId);
     await this._commentRepository.verifyCommentId(commentId);
-    return this._replyRepository.addReply(useCasePayload, threadId, commentId, credentialId);
+    return this._replyRepository.addReply(useCasePayload, commentId, credentialId);
   }
 
   async deleteReplyById(useCasePayload, threadId, commentId, credentialId) {

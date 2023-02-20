@@ -54,7 +54,7 @@ describe('UpdateLikeUseCase', () => {
     const expectedResponse = 'like-123';
 
     /** mocking needed function */
-    mockLikeRepository.isAlreadyLiked = jest.fn(() => Promise.resolve());
+    mockLikeRepository.isAlreadyLiked = jest.fn(() => Promise.resolve(false));
     mockLikeRepository.addLike = jest.fn(() => Promise.resolve('like-123'));
 
     /** creating use case instance */

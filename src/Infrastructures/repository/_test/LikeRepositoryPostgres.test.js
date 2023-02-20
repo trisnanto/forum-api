@@ -19,6 +19,30 @@ describe('LikeRepositoryPostgres', () => {
   });
 
   describe('addLike function', () => {
+    it('should return new like correctly', async () => {
+      // Arrange
+      const fakeIdGenerator = () => '123';
+      const fakeThreadId = 'thread-123';
+      const fakeCommentId = 'comment-123';
+      const fakeCredentialId = 'user-123';
+      const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, fakeIdGenerator);
+
+      // Action
+      await UsersTableTestHelper.addUser({
+        id: fakeCredentialId, username: 'New user',
+      });
+      await ThreadsTableTestHelper.addThread({
+        id: fakeThreadId, title: 'New title', owner: fakeCredentialId,
+      });
+      await CommentsTableTestHelper.addComment({
+        id: fakeCommentId, content: 'New comment', owner: fakeCredentialId,
+      });
+      const likeId = await likeRepositoryPostgres.addLike(fakeCommentId, fakeCredentialId);
+
+      // Assert
+      expect(likeId).toEqual('like-123');
+    });
+
     it('should persist new like', async () => {
       // Arrange
       const fakeIdGenerator = () => '123';
